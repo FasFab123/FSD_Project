@@ -4,16 +4,19 @@ using DatingApplication.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DatingApplication.Server.Data.Migrations
+namespace DatingApplication.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240128122112_AddedDefaultDataAndUsers")]
+    partial class AddedDefaultDataAndUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,6 +94,252 @@ namespace DatingApplication.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e052d0aa-4a8d-48e4-a378-89b805edabd9",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAtgT7As/F0/CAuWcoxxRefs0rDDasBEKRMjF80Jbiqzvd+5Qfk6Wl+dXbDCwaUNEw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "c5508b6b-41da-4ce8-a159-cd8821f507a9",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@localhost.com"
+                        });
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ChatTimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DatingAppUserMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MatchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.DatingAppUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DatingAppUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Age = 18,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9741),
+                            DateUpdated = new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9754),
+                            Email = "Felicia@gmail.com",
+                            Gender = "Female",
+                            Password = "fel123",
+                            UpdatedBy = "System",
+                            Username = "Felicia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Age = 21,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9758),
+                            DateUpdated = new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9759),
+                            Email = "Jacob@gmail.com",
+                            Gender = "Male",
+                            Password = "Jac123",
+                            UpdatedBy = "System",
+                            Username = "Jacob"
+                        });
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.Match", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DatingAppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DatingAppUserInitiatorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DatingAppUserRecieverId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DatingAppUserId");
+
+                    b.HasIndex("DatingAppUserInitiatorId");
+
+                    b.HasIndex("DatingAppUserRecieverId");
+
+                    b.ToTable("Matches");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 1, 28, 20, 21, 11, 721, DateTimeKind.Local).AddTicks(310),
+                            DateUpdated = new DateTime(2024, 1, 28, 20, 21, 11, 721, DateTimeKind.Local).AddTicks(312),
+                            DatingAppUserInitiatorId = 1,
+                            DatingAppUserRecieverId = 2,
+                            UpdatedBy = "System"
+                        });
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.UserProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DatingAppUserDescription")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("DatingAppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FavouriteAnimal")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<float>("Height")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Hobby")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Weigth")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DatingAppUserId");
+
+                    b.ToTable("UserProfiles");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -259,6 +508,20 @@ namespace DatingApplication.Server.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -348,6 +611,13 @@ namespace DatingApplication.Server.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -369,6 +639,49 @@ namespace DatingApplication.Server.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.Chat", b =>
+                {
+                    b.HasOne("DatingApplication.Shared.Domain.Match", "Match")
+                        .WithMany()
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Match");
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.Match", b =>
+                {
+                    b.HasOne("DatingApplication.Shared.Domain.DatingAppUser", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("DatingAppUserId");
+
+                    b.HasOne("DatingApplication.Shared.Domain.DatingAppUser", "DatingAppUserInitiator")
+                        .WithMany("DatingAppUserInitiatorMatch")
+                        .HasForeignKey("DatingAppUserInitiatorId");
+
+                    b.HasOne("DatingApplication.Shared.Domain.DatingAppUser", "DatingAppUserReciever")
+                        .WithMany("DatingAppUserRecieverMatch")
+                        .HasForeignKey("DatingAppUserRecieverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DatingAppUserInitiator");
+
+                    b.Navigation("DatingAppUserReciever");
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.UserProfile", b =>
+                {
+                    b.HasOne("DatingApplication.Shared.Domain.DatingAppUser", "DatingAppUser")
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("DatingAppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DatingAppUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -420,6 +733,17 @@ namespace DatingApplication.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApplication.Shared.Domain.DatingAppUser", b =>
+                {
+                    b.Navigation("DatingAppUserInitiatorMatch");
+
+                    b.Navigation("DatingAppUserRecieverMatch");
+
+                    b.Navigation("Matches");
+
+                    b.Navigation("UserProfiles");
                 });
 #pragma warning restore 612, 618
         }
