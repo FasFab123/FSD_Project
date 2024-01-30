@@ -16,41 +16,54 @@ namespace DatingApplication.Server.Controllers
     [ApiController]
     public class ChatsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ChatsController(ApplicationDbContext context)
+        public ChatsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Chats
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Chat>>> GetChats()
+        //public async Task<ActionResult<IEnumerable<Chat>>> GetChats()
+        public async Task<IActionResult> GetChats()
         {
-          if (_context.Chats == null)
-          {
-              return NotFound();
-          }
-            return await _context.Chats.ToListAsync();
+            //if (_context.Chats == null)
+            //{
+            //    return NotFound();
+            //}
+            //return await _context.Chats.ToListAsync();
+            var chats = await _unitOfWork.Chats.GetAll();
+            return Ok(chats);
         }
 
         // GET: api/Chats/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Chat>> GetChat(int id)
+        //public async Task<ActionResult<Chat>> GetChat(int id)
+        public async Task<IActionResult> GetChats(int id)
         {
-          if (_context.Chats == null)
-          {
-              return NotFound();
-          }
-            var chat = await _context.Chats.FindAsync(id);
-
+            var chat = await _unitOfWork.Chats.Get(q => q.Id == id);
             if (chat == null)
             {
                 return NotFound();
             }
-
-            return chat;
+            return Ok(chat);
         }
+        //{
+        //  if (_context.Chats == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var Chat = await _context.Chats.FindAsync(id);
+
+        //    if (Chat == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Chat;
+        //}
 
         // PUT: api/Chats/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -62,15 +75,18 @@ namespace DatingApplication.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(chat).State = EntityState.Modified;
+            //_context.Entry(Chat).State = EntityState.Modified;
+            _unitOfWork.Chats.Update(chat);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ChatExists(id))
+                //if (!ChatExists(id))
+                if (!await ChatExists(id))
                 {
                     return NotFound();
                 }
@@ -88,39 +104,49 @@ namespace DatingApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Chat>> PostChat(Chat chat)
         {
-          if (_context.Chats == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Chats'  is null.");
-          }
-            _context.Chats.Add(chat);
-            await _context.SaveChangesAsync();
+            //if (_context.Chats == null)
+            //{
+            //    return Problem("Entity set 'ApplicationDbContext.Chats'  is null.");
+            //}
+            //  _context.Chats.Add(Chat);
+            //  await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetChat", new { id = chat.Id }, chat);
+            //  return CreatedAtAction("GetChat", new { id = Chat.Id }, Chat);
+            await _unitOfWork.Chats.Insert(chat);
+            await _unitOfWork.Save(HttpContext);
+
+            return CreatedAtAction("GetChat", new { id = chat.Id, }, chat);
+
         }
 
         // DELETE: api/Chats/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteChat(int id)
         {
-            if (_context.Chats == null)
-            {
-                return NotFound();
-            }
-            var chat = await _context.Chats.FindAsync(id);
+            //if (_context.Chats == null)
+            //{
+            //    return NotFound();
+            //}
+            //var Chat = await _context.Chats.FindAsync(id);
+            var chat = _unitOfWork.Chats.Get(q => q.Id == id);
             if (chat == null)
             {
                 return NotFound();
             }
 
-            _context.Chats.Remove(chat);
-            await _context.SaveChangesAsync();
+            //_context.Chats.Remove(Chat);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Chats.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool ChatExists(int id)
+        private async Task<bool> ChatExists(int id)
         {
-            return (_context.Chats?.Any(e => e.Id == id)).GetValueOrDefault();
+            //return (_context.Chats?.Any(e => e.Id == id)).GetValueOrDefault();
+            var chat = await _unitOfWork.Chats.Get(q => q.Id == id);
+            return chat != null;
         }
     }
 }

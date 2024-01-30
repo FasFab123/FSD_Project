@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DatingApplication.Server.Data;
 using DatingApplication.Shared.Domain;
+using DatingApplication.Server.IRepository;
+using DatingApplication.Server.Repository;
 
 namespace DatingApplication.Server.Controllers
 {
@@ -14,61 +16,77 @@ namespace DatingApplication.Server.Controllers
     [ApiController]
     public class UserProfilesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserProfilesController(ApplicationDbContext context)
+        public UserProfilesController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/UserProfiles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserProfile>>> GetUserProfiles()
+        //public async Task<ActionResult<IEnumerable<UserProfile>>> GetUserProfiles()
+        public async Task<IActionResult> GetUserProfiles()
         {
-          if (_context.UserProfiles == null)
-          {
-              return NotFound();
-          }
-            return await _context.UserProfiles.ToListAsync();
+            //if (_context.UserProfiles == null)
+            //{
+            //    return NotFound();
+            //}
+            //return await _context.UserProfiles.ToListAsync();
+            var userprofiles = await _unitOfWork.UserProfiles.GetAll();
+            return Ok(userprofiles);
         }
 
         // GET: api/UserProfiles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserProfile>> GetUserProfile(int id)
+        //public async Task<ActionResult<UserProfile>> GetUserProfile(int id)
+        public async Task<IActionResult> GetUserProfiles(int id)
         {
-          if (_context.UserProfiles == null)
-          {
-              return NotFound();
-          }
-            var userProfile = await _context.UserProfiles.FindAsync(id);
-
-            if (userProfile == null)
+            var userprofile = await _unitOfWork.UserProfiles.Get(q => q.Id == id);
+            if (userprofile == null)
             {
                 return NotFound();
             }
-
-            return userProfile;
+            return Ok(userprofile);
         }
+        //{
+        //  if (_context.UserProfiles == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var UserProfile = await _context.UserProfiles.FindAsync(id);
+
+        //    if (UserProfile == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return UserProfile;
+        //}
 
         // PUT: api/UserProfiles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserProfile(int id, UserProfile userProfile)
+        public async Task<IActionResult> PutUserProfile(int id, UserProfile userprofile)
         {
-            if (id != userProfile.Id)
+            if (id != userprofile.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userProfile).State = EntityState.Modified;
+            //_context.Entry(UserProfile).State = EntityState.Modified;
+            _unitOfWork.UserProfiles.Update(userprofile);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserProfileExists(id))
+                //if (!UserProfileExists(id))
+                if (!await UserProfileExists(id))
                 {
                     return NotFound();
                 }
@@ -84,41 +102,51 @@ namespace DatingApplication.Server.Controllers
         // POST: api/UserProfiles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserProfile>> PostUserProfile(UserProfile userProfile)
+        public async Task<ActionResult<UserProfile>> PostUserProfile(UserProfile userprofile)
         {
-          if (_context.UserProfiles == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.UserProfiles'  is null.");
-          }
-            _context.UserProfiles.Add(userProfile);
-            await _context.SaveChangesAsync();
+            //if (_context.UserProfiles == null)
+            //{
+            //    return Problem("Entity set 'ApplicationDbContext.UserProfiles'  is null.");
+            //}
+            //  _context.UserProfiles.Add(UserProfile);
+            //  await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserProfile", new { id = userProfile.Id }, userProfile);
+            //  return CreatedAtAction("GetUserProfile", new { id = UserProfile.Id }, UserProfile);
+            await _unitOfWork.UserProfiles.Insert(userprofile);
+            await _unitOfWork.Save(HttpContext);
+
+            return CreatedAtAction("GetUserProfile", new { id = userprofile.Id, }, userprofile);
+
         }
 
         // DELETE: api/UserProfiles/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserProfile(int id)
         {
-            if (_context.UserProfiles == null)
-            {
-                return NotFound();
-            }
-            var userProfile = await _context.UserProfiles.FindAsync(id);
-            if (userProfile == null)
+            //if (_context.UserProfiles == null)
+            //{
+            //    return NotFound();
+            //}
+            //var UserProfile = await _context.UserProfiles.FindAsync(id);
+            var userprofile = _unitOfWork.UserProfiles.Get(q => q.Id == id);
+            if (userprofile == null)
             {
                 return NotFound();
             }
 
-            _context.UserProfiles.Remove(userProfile);
-            await _context.SaveChangesAsync();
+            //_context.UserProfiles.Remove(UserProfile);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.UserProfiles.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool UserProfileExists(int id)
+        private async Task<bool> UserProfileExists(int id)
         {
-            return (_context.UserProfiles?.Any(e => e.Id == id)).GetValueOrDefault();
+            //return (_context.UserProfiles?.Any(e => e.Id == id)).GetValueOrDefault();
+            var userprofile = await _unitOfWork.UserProfiles.Get(q => q.Id == id);
+            return userprofile != null;
         }
     }
 }

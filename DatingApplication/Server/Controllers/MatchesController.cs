@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DatingApplication.Server.Data;
 using DatingApplication.Shared.Domain;
+using DatingApplication.Server.IRepository;
+using DatingApplication.Server.Repository;
 
 namespace DatingApplication.Server.Controllers
 {
@@ -14,41 +16,54 @@ namespace DatingApplication.Server.Controllers
     [ApiController]
     public class MatchesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MatchesController(ApplicationDbContext context)
+        public MatchesController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Matches
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Match>>> GetMatches()
+        //public async Task<ActionResult<IEnumerable<Match>>> GetMatches()
+        public async Task<IActionResult> GetMatches()
         {
-          if (_context.Matches == null)
-          {
-              return NotFound();
-          }
-            return await _context.Matches.ToListAsync();
+            //if (_context.Matches == null)
+            //{
+            //    return NotFound();
+            //}
+            //return await _context.Matches.ToListAsync();
+            var matches = await _unitOfWork.Matches.GetAll();
+            return Ok(matches);
         }
 
         // GET: api/Matches/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Match>> GetMatch(int id)
+        //public async Task<ActionResult<Match>> GetMatch(int id)
+        public async Task<IActionResult> GetMatches(int id)
         {
-          if (_context.Matches == null)
-          {
-              return NotFound();
-          }
-            var match = await _context.Matches.FindAsync(id);
-
+            var match = await _unitOfWork.Matches.Get(q => q.Id == id);
             if (match == null)
             {
                 return NotFound();
             }
-
-            return match;
+            return Ok(match);
         }
+        //{
+        //  if (_context.Matches == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var Match = await _context.Matches.FindAsync(id);
+
+        //    if (Match == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Match;
+        //}
 
         // PUT: api/Matches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -60,15 +75,18 @@ namespace DatingApplication.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(match).State = EntityState.Modified;
+            //_context.Entry(Match).State = EntityState.Modified;
+            _unitOfWork.Matches.Update(match);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MatchExists(id))
+                //if (!MatchExists(id))
+                if (!await MatchExists(id))
                 {
                     return NotFound();
                 }
@@ -86,39 +104,50 @@ namespace DatingApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)
         {
-          if (_context.Matches == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Matches'  is null.");
-          }
-            _context.Matches.Add(match);
-            await _context.SaveChangesAsync();
+            //if (_context.Matches == null)
+            //{
+            //    return Problem("Entity set 'ApplicationDbContext.Matches'  is null.");
+            //}
+            //  _context.Matches.Add(Match);
+            //  await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMatch", new { id = match.Id }, match);
+            //  return CreatedAtAction("GetMatch", new { id = Match.Id }, Match);
+            await _unitOfWork.Matches.Insert(match);
+            await _unitOfWork.Save(HttpContext);
+
+            return CreatedAtAction("GetMatch", new { id = match.Id, }, match);
+
         }
 
         // DELETE: api/Matches/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatch(int id)
         {
-            if (_context.Matches == null)
-            {
-                return NotFound();
-            }
-            var match = await _context.Matches.FindAsync(id);
+            //if (_context.Matches == null)
+            //{
+            //    return NotFound();
+            //}
+            //var Match = await _context.Matches.FindAsync(id);
+            var match = _unitOfWork.Matches.Get(q => q.Id == id);
             if (match == null)
             {
                 return NotFound();
             }
 
-            _context.Matches.Remove(match);
-            await _context.SaveChangesAsync();
+            //_context.Matches.Remove(Match);
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.Matches.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool MatchExists(int id)
+        private async Task<bool> MatchExists(int id)
         {
-            return (_context.Matches?.Any(e => e.Id == id)).GetValueOrDefault();
+            //return (_context.Matches?.Any(e => e.Id == id)).GetValueOrDefault();
+            var match = await _unitOfWork.Matches.Get(q => q.Id == id);
+            return match != null;
         }
     }
 }
+
