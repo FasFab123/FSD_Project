@@ -1,0 +1,30 @@
+﻿@page "/Chats"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<PageTitle>Chats</PageTitle>
+
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Chats</h1>
+
+
+@code {
+    private List<Chat>? Chats;
+    protected async override Task OnInitializedAsync()
+    {
+        Chats = await _client.GetFromJsonAsync<List<Chat>>($"{Endpoints.ChatsEndpoint}");
+    }
+    async Task Delete(int chatId)
+    {
+        if(Chats != null)
+        {
+            var chat = Chats.First(q => q.Id == chatId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {chat.Id}");
+            if(confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.ChatsEndpoint}/{chatId}");
+                await OnInitializedAsync();
+            }
+        }
+    }
+}
