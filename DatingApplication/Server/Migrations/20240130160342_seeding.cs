@@ -8,11 +8,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DatingApplication.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedDefaultDataAndUsers : Migration
+    public partial class seeding : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "profile_picture_url",
+                table: "DatingAppUsers",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -25,15 +33,15 @@ namespace DatingApplication.Server.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "e052d0aa-4a8d-48e4-a378-89b805edabd9", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEAtgT7As/F0/CAuWcoxxRefs0rDDasBEKRMjF80Jbiqzvd+5Qfk6Wl+dXbDCwaUNEw==", null, false, "c5508b6b-41da-4ce8-a159-cd8821f507a9", false, "admin@localhost.com" });
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "b19592aa-675f-4e24-86fa-c00e937d42aa", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEKxSmZuOws3W95x3HT7VvquD66RB6679OQL7d0HWrjw9GH6hs42lG/dK/2oBwUf3GQ==", null, false, "6d4ffa9f-c67b-40d9-b277-17ddc77a13d8", false, "admin@localhost.com" });
 
             migrationBuilder.InsertData(
                 table: "DatingAppUsers",
-                columns: new[] { "Id", "Age", "CreatedBy", "DateCreated", "DateUpdated", "Email", "Gender", "Password", "UpdatedBy", "Username" },
+                columns: new[] { "Id", "Age", "CreatedBy", "DateCreated", "DateUpdated", "Email", "Gender", "Password", "UpdatedBy", "Username", "profile_picture_url" },
                 values: new object[,]
                 {
-                    { 1, 18, "System", new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9741), new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9754), "Felicia@gmail.com", "Female", "fel123", "System", "Felicia" },
-                    { 2, 21, "System", new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9758), new DateTime(2024, 1, 28, 20, 21, 11, 720, DateTimeKind.Local).AddTicks(9759), "Jacob@gmail.com", "Male", "Jac123", "System", "Jacob" }
+                    { 1, 18, "System", new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(179), new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(190), "Felicia@gmail.com", "Female", "fel123", "System", "Felicia", null },
+                    { 2, 21, "System", new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(193), new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(193), "Jacob@gmail.com", "Male", "Jac123", "System", "Jacob", null }
                 });
 
             migrationBuilder.InsertData(
@@ -44,7 +52,7 @@ namespace DatingApplication.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Matches",
                 columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "DatingAppUserId", "DatingAppUserInitiatorId", "DatingAppUserRecieverId", "UpdatedBy" },
-                values: new object[] { 1, "System", new DateTime(2024, 1, 28, 20, 21, 11, 721, DateTimeKind.Local).AddTicks(310), new DateTime(2024, 1, 28, 20, 21, 11, 721, DateTimeKind.Local).AddTicks(312), null, 1, 2, "System" });
+                values: new object[] { 1, "System", new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(646), new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(647), null, 1, 2, "System" });
         }
 
         /// <inheritdoc />
@@ -84,6 +92,16 @@ namespace DatingApplication.Server.Migrations
                 table: "DatingAppUsers",
                 keyColumn: "Id",
                 keyValue: 2);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "profile_picture_url",
+                table: "DatingAppUsers",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
         }
     }
 }

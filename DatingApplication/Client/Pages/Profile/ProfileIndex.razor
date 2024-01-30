@@ -1,55 +1,69 @@
 ﻿@page "/Profile"
 @inject IJSRuntime js
 @attribute [Authorize]
-@inject HttpClient Http
+@inject HttpClient _client
 
 <PageTitle>Profile</PageTitle>
 
-<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">User Profile</h1>>
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">User Profile</h1>
 
-
-
-@* @if (forecasts == null)
+@if (UserProfiles == null)
 {
-    <p><em>Loading...</em></p>
+    <div class="alert alert-info">Loading User Profiles...</div>
 }
 else
 {
-    <table class="table">
+    <table class=" table table-responsive">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Username</th>
+                <th>Description</th>
+                <th>Interest</th>
+                <th>Favourite Animal</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var userprofile in UserProfiles)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@userprofile.DatingAppUser.Username</td>
+                    <td>@userprofile.DatingAppUserDescription</td>
+                    <td>@userprofile.Hobby</td>
+                    <td>@userprofile.FavouriteAnimal</td>
+                    <td>
+                        <a href="/UserProfiles/View/@userprofile.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/UserProfiles/Edit/@userprofile.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class=" btn btn-danger" @onclick="@(()=> Delete(userprofile.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
+
     </table>
 }
 
-@code {
-    private WeatherForecast[]? forecasts;
-
-    protected override async Task OnInitializedAsync()
+@code{
+    private List<UserProfile> UserProfiles;
+    protected async override Task OnInitializedAsync()
     {
-        try
+        UserProfiles = await _client.GetFromJsonAsync<List<UserProfile>>($"{Endpoints.UserProfilesEndpoint}");
+    }
+    async Task Delete(int userprofileId)
+    {
+        var userprofile = UserProfiles.First(q => q.Id == userprofileId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {userprofile.Hobby}?");
+        if (confirm)
         {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
-        }
-        catch (AccessTokenNotAvailableException exception)
-        {
-            exception.Redirect();
+            await _client.DeleteAsync($"{Endpoints.UserProfilesEndpoint}/{userprofileId}");
+            await OnInitializedAsync();
         }
     }
-} *@
+
+}

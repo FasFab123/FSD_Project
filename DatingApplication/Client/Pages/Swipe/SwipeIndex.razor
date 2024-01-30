@@ -5,9 +5,63 @@
 
 <PageTitle>Find your Match</PageTitle>
 
-<h1 style= "text-align:center;font-family: 'Lucida Calligraphy',cursive">Find the one waiting for you!</h1>
+<h1 style= "text-align:center;font-family: 'Lucida Calligraphy',cursive">Choose the one for you!</h1>
+
+<a href="/Matches/Create" class=" btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Match with somebody!
+</a>
+
+@if (Matches == null)
+{
+    <div class="alert alert-info">Loading Matches...</div>
+}
+else
+{
+    <table class=" table table-responsive">
+        <thead>
+            <tr>
+                <th>Match Initiator</th>
+                <th>Match Reciever</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var match in Matches)
+            {
+                <tr>
+                    <td>@match.DatingAppUserInitiator.Username</td>
+                    <td>@match.DatingAppUserReciever.Username</td>
+                    <td>
+                        <a href="/matches/edit/@match.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class=" btn btn-danger" @onclick="@(()=> Delete(match.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
 
 @code {
-    
+    private List<Match> Matches;
+    protected async override Task OnInitializedAsync()
+    {
+        Matches = await _client.GetFromJsonAsync<List<Match>>($"{Endpoints.MatchesEndpoint}");
+    }
+    async Task Delete(int matchId)
+    {
+        var match = Matches.First(q => q.Id == matchId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {match.DatingAppUserInitiator.Username}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.MatchesEndpoint}/{matchId}");
+            await OnInitializedAsync();
+        }
+    }
 
 }

@@ -1,0 +1,80 @@
+﻿@page "/DatingAppUsers"
+@inject IJSRuntime js
+@attribute [Authorize]
+@inject HttpClient _client
+
+<PageTitle>Profile</PageTitle>
+
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Users</h1>
+<a href="/DatingAppUsers/Create" class=" btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New User
+    </a>
+<a href="/Profile" class=" btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Go to Profile
+</a>
+
+@if (DatingAppUsers == null)
+{
+    <div class="alert alert-info">Loading Users...</div>
+}
+else
+{
+    <table class=" table table-responsive">
+        <thead>
+            <tr>
+                <th>Profile Picture</th>
+                <th>Username</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var datingappuser in DatingAppUsers)
+            {
+                <tr>
+                    <td><img src="@datingappuser.profile_picture_url" style="width: 100px; height: 100px;" /></td> 
+                    <td>@datingappuser.Username</td>
+                    <td>@datingappuser.Age</td>
+                    <td>@datingappuser.Gender</td>
+                    <td>
+                        <a href="/DatingAppUsers/View/@datingappuser.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/DatingAppUsers/Edit/@datingappuser.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class=" btn btn-danger" @onclick="@(()=> Delete(datingappuser.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+
+
+
+@code{
+    private List<DatingAppUser> DatingAppUsers;
+    protected async override Task OnInitializedAsync()
+    {
+        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUserEndpoint}");
+    }
+    async Task Delete(int datingappuserId)
+    {
+        var datingappuser = DatingAppUsers.First(q => q.Id == datingappuserId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {datingappuser.Username}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.DatingAppUserEndpoint}/{datingappuserId}");
+            await OnInitializedAsync();
+        }
+    }
+
+}

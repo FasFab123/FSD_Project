@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApplication.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240128121739_newdb")]
-    partial class newdb
+    [Migration("20240130160342_seeding")]
+    partial class seeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.14")
+                .HasAnnotation("ProductVersion", "7.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -94,6 +94,26 @@ namespace DatingApplication.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b19592aa-675f-4e24-86fa-c00e937d42aa",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKxSmZuOws3W95x3HT7VvquD66RB6679OQL7d0HWrjw9GH6hs42lG/dK/2oBwUf3GQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "6d4ffa9f-c67b-40d9-b277-17ddc77a13d8",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@localhost.com"
+                        });
                 });
 
             modelBuilder.Entity("DatingApplication.Shared.Domain.Chat", b =>
@@ -181,9 +201,40 @@ namespace DatingApplication.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("profile_picture_url")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("DatingAppUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Age = 18,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(179),
+                            DateUpdated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(190),
+                            Email = "Felicia@gmail.com",
+                            Gender = "Female",
+                            Password = "fel123",
+                            UpdatedBy = "System",
+                            Username = "Felicia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Age = 21,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(193),
+                            DateUpdated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(193),
+                            Email = "Jacob@gmail.com",
+                            Gender = "Male",
+                            Password = "Jac123",
+                            UpdatedBy = "System",
+                            Username = "Jacob"
+                        });
                 });
 
             modelBuilder.Entity("DatingApplication.Shared.Domain.Match", b =>
@@ -227,6 +278,18 @@ namespace DatingApplication.Server.Migrations
                     b.HasIndex("DatingAppUserRecieverId");
 
                     b.ToTable("Matches");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(646),
+                            DateUpdated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(647),
+                            DatingAppUserInitiatorId = 1,
+                            DatingAppUserRecieverId = 2,
+                            UpdatedBy = "System"
+                        });
                 });
 
             modelBuilder.Entity("DatingApplication.Shared.Domain.UserProfile", b =>
@@ -448,6 +511,20 @@ namespace DatingApplication.Server.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -537,6 +614,13 @@ namespace DatingApplication.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

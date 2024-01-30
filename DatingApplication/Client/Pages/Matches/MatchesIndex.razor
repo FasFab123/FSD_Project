@@ -1,11 +1,69 @@
 ﻿@page "/Matches"
+@inject IJSRuntime js
+@attribute [Authorize]
+@inject HttpClient _client
 
 <PageTitle>Matches</PageTitle>
 
 <h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Matches</h1>
+@*
+    to be implemented( want to display matches based on user)
+@if (Matches == null)
+{
+    <div class="alert alert-info">Loading User Profiles...</div>
+}
+else
+{
+    <table class=" table table-responsive">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Description</th>
+                <th>Interest</th>
+                <th>Favourite Animal</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in Matches)
+            {
+                <tr>
+                    <td>@match.DatingAppUser.Username</td>
+                    <td>@match.DatingAppUserDescription</td>
+                    <td>@match.Hobby</td>
+                    <td>@match.FavouriteAnimal</td>
+                    <td>
+                        <a href="/UserProfiles/View/@match.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/UserProfiles/Edit/@match.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class=" btn btn-danger" @onclick="@(()=> Delete(match.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
 
-<MatchesComponenet/>
+    </table> *@
 
 @code {
+    private List<Match> Matches;
+    protected async override Task OnInitializedAsync()
+    {
+        Matches = await _client.GetFromJsonAsync<List<Match>>($"{Endpoints.MatchesEndpoint}");
+    }
+    async Task Delete(int matchId)
+    {
+        var match = Matches.First(q => q.Id == matchId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {match.DatingAppUserInitiator.Username}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.MatchesEndpoint}/{matchId}");
+            await OnInitializedAsync();
+        }
+    }
 
 }
