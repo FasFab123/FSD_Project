@@ -34,14 +34,14 @@ namespace DatingApplication.Server.Controllers
             //    return NotFound();
             //}
             //return await _context.DatingAppUsers.ToListAsync();
-            var datingappusers = await _unitOfWork.DatingAppUsers.GetAll();
+            var datingappusers = await _unitOfWork.DatingAppUsers.GetAll(includes: q => q.Include(x => x.UserProfiles).Include(x => x.Matches));
             return Ok(datingappusers);
         }
 
         // GET: api/DatingAppUsers/5
         [HttpGet("{id}")]
         //public async Task<ActionResult<DatingAppUser>> GetDatingAppUser(int id)
-        public async Task<IActionResult> GetDatingAppUsers(int id)
+        public async Task<IActionResult> GetDatingAppUser(int id)
         {
             var datingappuser = await _unitOfWork.DatingAppUsers.Get(q => q.Id == id);
             if(datingappuser == null)
@@ -115,7 +115,7 @@ namespace DatingApplication.Server.Controllers
           await _unitOfWork.DatingAppUsers.Insert(datingappuser);
           await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetDatingAppUser", new { id = datingappuser.Id, }, datingappuser);
+            return CreatedAtAction("GetDatingAppUser", new { id = datingappuser.Id }, datingappuser);
        
         }
 

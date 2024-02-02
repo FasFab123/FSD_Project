@@ -1,0 +1,23 @@
+﻿@page "/DatingAppUsers/Edit/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Edit User</h1>
+
+<DatingAppUserComponent ButtonText="Update" OnValidSubmit="EditUser" datingappuser="datingappuser"/>
+<BackToList Target="DatingAppUsers"/>
+
+@code {
+    [Parameter] public int id { get; set; }
+    DatingAppUser datingappuser = new DatingAppUser();
+    protected async override Task OnParametersSetAsync()
+    {
+        datingappuser = await _client.GetFromJsonAsync<DatingAppUser>($"{Endpoints.DatingAppUserEndpoint}/{id}");
+    }
+    async Task EditUser()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.DatingAppUserEndpoint}/{id}", datingappuser);
+        _navManager.NavigateTo("/DatingAppUsers/");
+    }
+
+}

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApplication.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240130154735_newdb")]
+    [Migration("20240202122046_newdb")]
     partial class newdb
     {
         /// <inheritdoc />
@@ -94,6 +94,26 @@ namespace DatingApplication.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7f7e4bcc-7eaa-4c2c-8832-1ead2625c264",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHKuPtlgp5lSSf1qA23kslfwD3oaUbhcYPUCEPVbhmubwSHJPWwhgtiNcBfjRI2HSw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "3f1ac0d6-7f6e-4452-be0f-0dbf9c59621a",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@localhost.com"
+                        });
                 });
 
             modelBuilder.Entity("DatingApplication.Shared.Domain.Chat", b =>
@@ -108,7 +128,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -129,7 +148,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -151,7 +169,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -173,7 +190,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -182,12 +198,39 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("profile_picture_url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("DatingAppUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Age = 18,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4092),
+                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4104),
+                            Email = "Felicia@gmail.com",
+                            Gender = "Female",
+                            Password = "fel123",
+                            UpdatedBy = "System",
+                            Username = "Felicia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Age = 21,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4107),
+                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4108),
+                            Email = "Jacob@gmail.com",
+                            Gender = "Male",
+                            Password = "Jac123",
+                            UpdatedBy = "System",
+                            Username = "Jacob"
+                        });
                 });
 
             modelBuilder.Entity("DatingApplication.Shared.Domain.Match", b =>
@@ -199,7 +242,6 @@ namespace DatingApplication.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -219,7 +261,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -231,6 +272,18 @@ namespace DatingApplication.Server.Migrations
                     b.HasIndex("DatingAppUserRecieverId");
 
                     b.ToTable("Matches");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4586),
+                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4587),
+                            DatingAppUserInitiatorId = 1,
+                            DatingAppUserRecieverId = 2,
+                            UpdatedBy = "System"
+                        });
                 });
 
             modelBuilder.Entity("DatingApplication.Shared.Domain.UserProfile", b =>
@@ -242,7 +295,6 @@ namespace DatingApplication.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -273,7 +325,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Weigth")
@@ -452,6 +503,20 @@ namespace DatingApplication.Server.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -541,6 +606,13 @@ namespace DatingApplication.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

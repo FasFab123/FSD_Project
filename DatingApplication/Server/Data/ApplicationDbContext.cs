@@ -20,6 +20,7 @@ namespace DatingApplication.Server.Data
         public DbSet<Match> Matches { get; set; }
         public DbSet<DatingAppUser> DatingAppUsers {  get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }   
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -11,16 +11,16 @@ namespace DatingApplication.Shared.Domain
     {
         [Required]
         [StringLength(100, MinimumLength =3, ErrorMessage ="Invalid Entry")]
-        public string Hobby { get; set; }
+        public string? Hobby { get; set; }
         [Required]
         [StringLength(100, MinimumLength =3, ErrorMessage = "Invalid Animal")]
-        public string FavouriteAnimal { get; set; }
+        public string? FavouriteAnimal { get; set; }
         [Required]
         [StringLength(100, MinimumLength =3, ErrorMessage ="Description is too short")]
-        public string DatingAppUserDescription { get; set; }
+        public string? DatingAppUserDescription { get; set; }
         public float Height { get; set; }
         public float Weigth { get; set; }
         public int DatingAppUserId { get; set; }
-        public virtual DatingAppUser DatingAppUser { get; set; }
+        public virtual DatingAppUser? DatingAppUser { get; set; }
     }
 }

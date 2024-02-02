@@ -34,14 +34,14 @@ namespace DatingApplication.Server.Controllers
             //    return NotFound();
             //}
             //return await _context.Matches.ToListAsync();
-            var matches = await _unitOfWork.Matches.GetAll();
+            var matches = await _unitOfWork.Matches.GetAll(includes: q => q.Include(x => x.DatingAppUserInitiator).Include(x => x.DatingAppUserReciever));
             return Ok(matches);
         }
 
         // GET: api/Matches/5
         [HttpGet("{id}")]
         //public async Task<ActionResult<Match>> GetMatch(int id)
-        public async Task<IActionResult> GetMatches(int id)
+        public async Task<IActionResult> GetMatch(int id)
         {
             var match = await _unitOfWork.Matches.Get(q => q.Id == id);
             if (match == null)
@@ -115,7 +115,7 @@ namespace DatingApplication.Server.Controllers
             await _unitOfWork.Matches.Insert(match);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMatch", new { id = match.Id, }, match);
+            return CreatedAtAction("GetMatch", new { id = match.Id }, match);
 
         }
 

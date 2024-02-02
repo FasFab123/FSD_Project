@@ -1,9 +1,101 @@
-﻿<h3>MatchesComponent</h3>
+@inject HttpClient _client
+@inject NavigationManager _navManager
 
-<h5>This is the matches page</h5>
+<EditForm Model="@match" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-<button class="btn btn-dark">Hello World</button>
+    <div class="form-group">
+        <label>User: </label>
+        <br />
+        <div>
+            <InputSelect @bind-Value="match.DatingAppUserInitiatorId" class="form-control">
+                <option value="">--Select Initiator--</option>
+                @if (DatingAppUsers != null)
+                {
+                    foreach (var datingappuser in DatingAppUsers)
+                    {
+                        <option value="@datingappuser.Id">@datingappuser.Username</option>
+                    }
+                }
+                <ValidationMessage For="@(()=> match.DatingAppUserInitiatorId)"/>
+            </InputSelect>
+            
+        </div>
+    </div>
+    <br />
+    <h4 style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Your Potential Matches</h4>
+
+    @if (DatingAppUsers == null)
+    {
+        <div class="alert alert-info">No Potential Matches Available...</div>
+    }
+    else
+    {
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Profile Picture</th>
+                    <th>Username</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+                    @foreach (var datingappuser in DatingAppUsers)
+                    {
+                        <tr>
+                            <td><img src="@datingappuser.profile_picture_url" style="width: 100px; height: 100px;"></td>
+                            <td>@datingappuser.Username</td>
+                            <td>@datingappuser.Age</td>
+                            <td>@datingappuser.Gender</td>
+                            <td>
+                                <a class="btn btn-light" @onclick="@(()=> Like(datingappuser.Id))">
+                                    <span class="oi oi-thumb-up"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+    }
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">@ButtonText</button>
+    }
+    <BackToList Target="Matches"/>
+</EditForm>
 
 @code {
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public Match? match { get; set; }
+
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private IList<DatingAppUser> DatingAppUsers;
+    private IList<UserProfile> UserProfiles;
+
+    int picture = 0;
+
+    async Task Like(int datingappuserId)
+    {
+        var datingappuser = DatingAppUsers.First(q => q.Id == datingappuserId);
+        match.DatingAppUserRecieverId = datingappuser.Id;
+    }
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>(Endpoints.DatingAppUserEndpoint);
+            UserProfiles = await _client.GetFromJsonAsync<List<UserProfile>>(Endpoints.UserProfilesEndpoint);
+        }
+        catch (Exception ex)
+        {
+            // Log or display the exception
+            Console.WriteLine($"Error fetching DatingAppUsers: {ex.Message}");
+        }
+    }
+
 
 }

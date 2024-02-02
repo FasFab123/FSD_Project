@@ -97,7 +97,7 @@ namespace DatingApplication.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b19592aa-675f-4e24-86fa-c00e937d42aa",
+                            ConcurrencyStamp = "7f7e4bcc-7eaa-4c2c-8832-1ead2625c264",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -105,9 +105,9 @@ namespace DatingApplication.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKxSmZuOws3W95x3HT7VvquD66RB6679OQL7d0HWrjw9GH6hs42lG/dK/2oBwUf3GQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHKuPtlgp5lSSf1qA23kslfwD3oaUbhcYPUCEPVbhmubwSHJPWwhgtiNcBfjRI2HSw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6d4ffa9f-c67b-40d9-b277-17ddc77a13d8",
+                            SecurityStamp = "3f1ac0d6-7f6e-4452-be0f-0dbf9c59621a",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });
@@ -125,7 +125,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -146,7 +145,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -168,7 +166,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -190,7 +187,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -211,8 +207,8 @@ namespace DatingApplication.Server.Migrations
                             Id = 1,
                             Age = 18,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(179),
-                            DateUpdated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(190),
+                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4092),
+                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4104),
                             Email = "Felicia@gmail.com",
                             Gender = "Female",
                             Password = "fel123",
@@ -224,8 +220,8 @@ namespace DatingApplication.Server.Migrations
                             Id = 2,
                             Age = 21,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(193),
-                            DateUpdated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(193),
+                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4107),
+                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4108),
                             Email = "Jacob@gmail.com",
                             Gender = "Male",
                             Password = "Jac123",
@@ -243,7 +239,6 @@ namespace DatingApplication.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -263,7 +258,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -281,8 +275,8 @@ namespace DatingApplication.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(646),
-                            DateUpdated = new DateTime(2024, 1, 31, 0, 3, 41, 729, DateTimeKind.Local).AddTicks(647),
+                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4586),
+                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4587),
                             DatingAppUserInitiatorId = 1,
                             DatingAppUserRecieverId = 2,
                             UpdatedBy = "System"
@@ -298,7 +292,6 @@ namespace DatingApplication.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
@@ -329,7 +322,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Weigth")

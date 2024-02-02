@@ -31,8 +31,8 @@ namespace DatingApplication.Shared.Domain
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password is too short")]
         public string Password { get; set; }
         public string? profile_picture_url { get; set; }
-        public virtual List<UserProfile> UserProfiles { get; set; }
-        public virtual List<Match> Matches { get; set; }
+        public virtual List<UserProfile>? UserProfiles { get; set; }
+        public virtual List<Match>? Matches { get; set; }
         [InverseProperty("DatingAppUserInitiator")]
         public virtual ICollection<Match> DatingAppUserInitiatorMatch { get; set; }
         [InverseProperty("DatingAppUserReciever")]

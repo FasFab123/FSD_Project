@@ -1,0 +1,20 @@
+﻿@page "/UserProfiles/Create"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Create User Profile</h1>
+<hr />
+<ProfileFormComponent ButtonText="Create Profile" userprofile="userprofile" OnValidSubmit="@CreateProfile"/>
+@code {
+    private IList<DatingAppUser> DatingAppUsers;
+    UserProfile userprofile = new UserProfile();
+    protected async override Task OnInitializedAsync()
+    {
+        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUserEndpoint}");
+    }
+    private async Task CreateProfile()
+    {
+        await _client.PostAsJsonAsync(Endpoints.UserProfilesEndpoint, userprofile);
+        _navManager.NavigateTo("/Profile");
+    }
+}

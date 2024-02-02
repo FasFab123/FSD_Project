@@ -6,32 +6,27 @@
 <PageTitle>Matches</PageTitle>
 
 <h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Matches</h1>
-@*
-    to be implemented( want to display matches based on user)
+
 @if (Matches == null)
 {
-    <div class="alert alert-info">Loading User Profiles...</div>
+    <div class="alert alert-info">Loading Matches...</div>
 }
 else
 {
     <table class=" table table-responsive">
         <thead>
             <tr>
-                <th>Username</th>
-                <th>Description</th>
-                <th>Interest</th>
-                <th>Favourite Animal</th>
-                <th>Actions</th>
+                <th>Initiator</th>
+                <th>Reciever</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var match in Matches)
             {
                 <tr>
-                    <td>@match.DatingAppUser.Username</td>
-                    <td>@match.DatingAppUserDescription</td>
-                    <td>@match.Hobby</td>
-                    <td>@match.FavouriteAnimal</td>
+                    <td>@match.DatingAppUserInitiator.Username</td>
+                    <td>@match.DatingAppUserReciever.Username</td>
                     <td>
                         <a href="/UserProfiles/View/@match.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
@@ -47,7 +42,8 @@ else
             }
         </tbody>
 
-    </table> *@
+    </table>
+}
 
 @code {
     private List<Match> Matches;
@@ -65,5 +61,5 @@ else
             await OnInitializedAsync();
         }
     }
-
 }
+

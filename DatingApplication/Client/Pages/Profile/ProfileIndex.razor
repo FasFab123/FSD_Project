@@ -1,4 +1,4 @@
-﻿@page "/Profile"
+﻿@page "/UserProfiles"
 @inject IJSRuntime js
 @attribute [Authorize]
 @inject HttpClient _client
@@ -6,6 +6,12 @@
 <PageTitle>Profile</PageTitle>
 
 <h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">User Profile</h1>
+<hr />
+<br />
+<a href="/UserProfiles/Create" class=" btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Profile
+</a>
 
 @if (UserProfiles == null)
 {
@@ -58,7 +64,7 @@ else
     async Task Delete(int userprofileId)
     {
         var userprofile = UserProfiles.First(q => q.Id == userprofileId);
-        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {userprofile.Hobby}?");
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {userprofile.DatingAppUser.Username}?");
         if (confirm)
         {
             await _client.DeleteAsync($"{Endpoints.UserProfilesEndpoint}/{userprofileId}");

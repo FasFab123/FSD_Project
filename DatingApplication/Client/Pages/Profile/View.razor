@@ -1,0 +1,16 @@
+﻿@page "/UserProfiles/View/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>View</h3>
+
+<ProfileFormComponent userprofile="userprofile" Disabled="true" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    UserProfile userprofile = new UserProfile();
+    protected async override Task OnParametersSetAsync()
+    {
+        userprofile = await _client.GetFromJsonAsync<UserProfile>($"{Endpoints.UserProfilesEndpoint}/{id}");
+    }
+}

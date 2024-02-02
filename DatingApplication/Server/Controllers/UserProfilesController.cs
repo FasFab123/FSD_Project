@@ -34,14 +34,14 @@ namespace DatingApplication.Server.Controllers
             //    return NotFound();
             //}
             //return await _context.UserProfiles.ToListAsync();
-            var userprofiles = await _unitOfWork.UserProfiles.GetAll();
+            var userprofiles = await _unitOfWork.UserProfiles.GetAll(includes: q => q.Include(x => x.DatingAppUser));
             return Ok(userprofiles);
         }
 
         // GET: api/UserProfiles/5
         [HttpGet("{id}")]
         //public async Task<ActionResult<UserProfile>> GetUserProfile(int id)
-        public async Task<IActionResult> GetUserProfiles(int id)
+        public async Task<IActionResult> GetUserProfile(int id)
         {
             var userprofile = await _unitOfWork.UserProfiles.Get(q => q.Id == id);
             if (userprofile == null)

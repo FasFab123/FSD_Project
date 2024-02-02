@@ -1,0 +1,47 @@
+﻿@page "/DatingAppUsers/Create"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Create User</h3>
+<hr />
+<br />
+<DatingAppUserComponent ButtonText="Create User" OnValidSubmit="CreateUser" datingappuser="datingappuser" />
+<BackToList Target="DatingAppUsers"/>
+@code {
+    DatingAppUser datingappuser = new DatingAppUser();
+
+    private IList<Match>? Matches;
+    private IList<UserProfile>? UserProfiles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Matches = await _client.GetFromJsonAsync<List<Match>>($"{Endpoints.MatchesEndpoint}");
+        UserProfiles = await _client.GetFromJsonAsync<List<UserProfile>>($"{Endpoints.UserProfilesEndpoint}");
+    }
+
+    private async Task CreateUser()
+    {
+        var response = await _client.PostAsJsonAsync(Endpoints.DatingAppUserEndpoint, datingappuser);
+        if (response.IsSuccessStatusCode)
+        {
+            // Navigate or perform other actions on success
+            _navManager.NavigateTo("/DatingAppUsers");
+        }
+        else
+        {
+            // Handle error, log response, or display an error message
+            Console.WriteLine("Error: " + await response.Content.ReadAsStringAsync());
+        }
+
+    }
+
+    private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
+    {
+        var file = inputFileChangeEvent.File;
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream().ReadAsync(buffer);
+
+        datingappuser.profile_picture_url = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+    }
+
+}

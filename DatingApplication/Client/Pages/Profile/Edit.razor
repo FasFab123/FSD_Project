@@ -1,0 +1,22 @@
+﻿@page "/UserProfiles/Edit/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Edit Profile</h1>
+
+<ProfileFormComponent ButtonText="Update Profile" OnValidSubmit="EditProfile" userprofile="userprofile"/>
+
+@code {
+    [Parameter] public int id { get; set; }
+    UserProfile userprofile = new UserProfile();
+    protected async override Task OnParametersSetAsync()
+    {
+        userprofile = await _client.GetFromJsonAsync<UserProfile>($"{Endpoints.UserProfilesEndpoint}/{id}");
+    }
+
+    private async Task EditProfile()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.UserProfilesEndpoint}/{id}", userprofile);
+        _navManager.NavigateTo("/UserProfiles");
+    }
+}
