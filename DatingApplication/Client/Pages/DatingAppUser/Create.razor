@@ -5,7 +5,7 @@
 <h3 style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Create User</h3>
 <hr />
 <br />
-<DatingAppUserComponent ButtonText="Create User" OnValidSubmit="CreateUser" datingappuser="datingappuser" />
+<DatingAppUserComponent ButtonText="Create User" OnValidSubmit="@CreateUser" datingappuser="datingappuser"/>
 <BackToList Target="DatingAppUsers"/>
 @code {
     DatingAppUser datingappuser = new DatingAppUser();
@@ -21,7 +21,7 @@
 
     private async Task CreateUser()
     {
-        var response = await _client.PostAsJsonAsync(Endpoints.DatingAppUserEndpoint, datingappuser);
+        var response = await _client.PostAsJsonAsync(Endpoints.DatingAppUsersEndpoint, datingappuser);
         if (response.IsSuccessStatusCode)
         {
             // Navigate or perform other actions on success

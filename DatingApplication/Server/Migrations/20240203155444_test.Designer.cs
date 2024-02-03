@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApplication.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240202122046_newdb")]
-    partial class newdb
+    [Migration("20240203155444_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,7 +100,7 @@ namespace DatingApplication.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7f7e4bcc-7eaa-4c2c-8832-1ead2625c264",
+                            ConcurrencyStamp = "05be037a-a64d-45d6-b325-3c9e89ee569f",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -108,9 +108,9 @@ namespace DatingApplication.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHKuPtlgp5lSSf1qA23kslfwD3oaUbhcYPUCEPVbhmubwSHJPWwhgtiNcBfjRI2HSw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBbP975Gf4S01JWqewzgF80GuWoa7YULgO9fpDBu8ha4sBnh77Cv8u6GQE2djr93uQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3f1ac0d6-7f6e-4452-be0f-0dbf9c59621a",
+                            SecurityStamp = "b5f8208a-63cc-46ce-85f7-f4d660806c9f",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });
@@ -182,6 +182,7 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -210,8 +211,8 @@ namespace DatingApplication.Server.Migrations
                             Id = 1,
                             Age = 18,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4092),
-                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4104),
+                            DateCreated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8248),
+                            DateUpdated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8259),
                             Email = "Felicia@gmail.com",
                             Gender = "Female",
                             Password = "fel123",
@@ -223,8 +224,8 @@ namespace DatingApplication.Server.Migrations
                             Id = 2,
                             Age = 21,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4107),
-                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4108),
+                            DateCreated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8263),
+                            DateUpdated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8263),
                             Email = "Jacob@gmail.com",
                             Gender = "Male",
                             Password = "Jac123",
@@ -257,7 +258,6 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("DatingAppUserRecieverId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -278,8 +278,8 @@ namespace DatingApplication.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4586),
-                            DateUpdated = new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4587),
+                            DateCreated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8717),
+                            DateUpdated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8718),
                             DatingAppUserInitiatorId = 1,
                             DatingAppUserRecieverId = 2,
                             UpdatedBy = "System"
@@ -659,9 +659,7 @@ namespace DatingApplication.Server.Migrations
 
                     b.HasOne("DatingApplication.Shared.Domain.DatingAppUser", "DatingAppUserReciever")
                         .WithMany("DatingAppUserRecieverMatch")
-                        .HasForeignKey("DatingAppUserRecieverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DatingAppUserRecieverId");
 
                     b.Navigation("DatingAppUserInitiator");
 

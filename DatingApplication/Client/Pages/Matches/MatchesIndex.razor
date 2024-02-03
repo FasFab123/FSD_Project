@@ -6,6 +6,10 @@
 <PageTitle>Matches</PageTitle>
 
 <h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Matches</h1>
+<a href="/Swipe" class=" btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Match With Somebody!
+</a>
 
 @if (Matches == null)
 {
@@ -28,10 +32,10 @@ else
                     <td>@match.DatingAppUserInitiator.Username</td>
                     <td>@match.DatingAppUserReciever.Username</td>
                     <td>
-                        <a href="/UserProfiles/View/@match.Id" class="btn btn-primary">
+                        <a href="/Matches/View/@match.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/UserProfiles/Edit/@match.Id" class="btn btn-warning">
+                        <a href="/Matches/Edit/@match.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class=" btn btn-danger" @onclick="@(()=> Delete(match.Id))">

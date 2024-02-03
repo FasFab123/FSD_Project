@@ -2,7 +2,7 @@
 @inject HttpClient _client
 @inject NavigationManager _navManager
 
-<h2>Profile</h2>
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">User Profile</h1>
 
 <EditForm Model="@datingappuser">
     <DataAnnotationsValidator />
@@ -41,8 +41,8 @@
         </div>
     </fieldset>
 </EditForm>
-
-<h2>Biography</h2>
+<br />
+<h3 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Biography</h3>
 
 @if (UserProfiles == null)
 {
@@ -72,7 +72,7 @@ else
     </table>
 }
 
-<h2>Matches</h2>
+<h3 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Matches</h3>
 
 @if (Matches == null)
 {
@@ -95,8 +95,9 @@ else
                         {
                             <tr>
                                 <td><img src="@match.DatingAppUserInitiator.profile_picture_url" style="width: 100px; height: 100px;"/></td>
-                                <td>@match.DatingAppUserInitiator</td>
-                                <td>@match.DatingAppUserReciever</td>
+                                <td>@match.DatingAppUserInitiator.Username</td>
+                            <td><img src="@match.DatingAppUserReciever.profile_picture_url" style="width: 100px; height: 100px;" /></td>
+                                <td>@match.DatingAppUserReciever.Username</td>
                             </tr>
                         }
                     }
@@ -117,7 +118,7 @@ else
 
     protected async override Task OnParametersSetAsync()
     {
-        datingappuser = await _client.GetFromJsonAsync<DatingAppUser>($"{Endpoints.DatingAppUserEndpoint}/{id}");
+        datingappuser = await _client.GetFromJsonAsync<DatingAppUser>($"{Endpoints.DatingAppUsersEndpoint}/{id}");
         UserProfiles = await _client.GetFromJsonAsync<List<UserProfile>>($"{Endpoints.UserProfilesEndpoint}");
         Matches = await _client.GetFromJsonAsync<List<Match>>($"{Endpoints.MatchesEndpoint}");
     }

@@ -1,0 +1,106 @@
+﻿@page "/Matches/View/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Match Details</h1>
+
+@if (Matches == null)
+{
+    <div class="alert alert-info">No Matches...</div>
+}
+else
+{
+    <table class=" table table-responsive">
+        <thead>
+            <tr>
+                <th>Profile Picture</th>
+                <th>Initiator</th>
+                <td>Profile Picture</td>
+                <th>Reciever</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in Matches)
+            {
+                if (match.Id == id)
+                {
+                    <tr>
+                        <td><img src="@match.DatingAppUserInitiator.profile_picture_url" style="width: 100px; height: 100px;" /></td>
+                        <td>@match.DatingAppUserInitiator.Username</td>
+                        <td><img src="@match.DatingAppUserReciever.profile_picture_url" style="width: 100px; height: 100px;" /></td>
+                        <td>@match.DatingAppUserReciever.Username</td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+    <EditForm Model="@datingappuser">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <fieldset disabled="@Disabled">
+            @foreach(var match in Matches)
+            {
+                if (match.Id == id)
+                {
+                    <div style="display: inline-block; margin-right: 250px;">
+                    <div class="form-group">
+                        <label>Age: </label>
+                        <div>
+                            <InputNumber @bind-Value="@match.DatingAppUserInitiator.Age" class="form-control" />
+                            <ValidationMessage For="@(()=> datingappuser.Age)" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender: </label>
+                        <div>
+                            <InputSelect @bind-Value="@match.DatingAppUserInitiator.Gender" class="form-control">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(()=> datingappuser.Gender)" />
+                        </div>
+                    </div>
+                    </div>
+                    
+                    <div style="display: inline-block; margin-right: 20px;">
+                    <div class="form-group">
+                        <label>Age: </label>
+                        <div>
+                            <InputNumber @bind-Value="@match.DatingAppUserReciever.Age" class="form-control" />
+                            <ValidationMessage For="@(()=> datingappuser.Age)" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender: </label>
+                        <div>
+                            <InputSelect @bind-Value="@match.DatingAppUserReciever.Gender" class="form-control">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(()=> datingappuser.Gender)" />
+                        </div>
+                    </div>
+                    </div>
+            }
+            }
+        </fieldset>
+    </EditForm>
+}
+<br />
+<BackToList Target="Matches"/>
+@code {
+    [Parameter] public int id { get; set; }
+    [Parameter] public bool Disabled { get; set; } = true;
+    DatingAppUser datingappuser = new DatingAppUser();
+    private List<UserProfile>? UserProfiles;
+    private List<Match>? Matches;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        datingappuser = await _client.GetFromJsonAsync<DatingAppUser>($"{Endpoints.DatingAppUsersEndpoint}/{id}");
+        UserProfiles = await _client.GetFromJsonAsync<List<UserProfile>>($"{Endpoints.UserProfilesEndpoint}");
+        Matches = await _client.GetFromJsonAsync<List<Match>>($"{Endpoints.MatchesEndpoint}");
+    }
+
+}

@@ -13,7 +13,7 @@ namespace DatingApplication.Shared.Domain
         public int? DatingAppUserInitiatorId { get; set; }
         [ForeignKey("DatingAppUserReciever")]
         public int? DatingAppUserRecieverId { get; set; }
-        public virtual DatingAppUser DatingAppUserInitiator { get; set; }
-        public virtual DatingAppUser DatingAppUserReciever { get; set; }
+        public virtual DatingAppUser? DatingAppUserInitiator { get; set; }
+        public virtual DatingAppUser? DatingAppUserReciever { get; set; }
     }
 }

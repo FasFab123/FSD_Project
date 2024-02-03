@@ -1,5 +1,5 @@
 @inject HttpClient _client
-@inject NavigationManager _navManager
+
 
 <EditForm Model="@match" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
@@ -39,6 +39,7 @@
                     <th>Username</th>
                     <th>Age</th>
                     <th>Gender</th>
+                    <th>Like</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,7 +51,7 @@
                             <td>@datingappuser.Age</td>
                             <td>@datingappuser.Gender</td>
                             <td>
-                                <a class="btn btn-light" @onclick="@(()=> Like(datingappuser.Id))">
+                                <a class="btn btn-light" @onclick="@(() => Like(datingappuser.Id))">
                                     <span class="oi oi-thumb-up"></span>
                                 </a>
                             </td>
@@ -68,34 +69,26 @@
 
 @code {
     [Parameter] public bool Disabled { get; set; } = false;
-    [Parameter] public Match? match { get; set; }
+    [Parameter] public Match match { get; set; }
 
     [Parameter] public string ButtonText { get; set; } = "Save";
     [Parameter] public EventCallback OnValidSubmit { get; set; }
 
     private IList<DatingAppUser> DatingAppUsers;
-    private IList<UserProfile> UserProfiles;
 
-    int picture = 0;
+    protected async override Task OnInitializedAsync()
+    {
+
+        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUsersEndpoint}");
+
+    }
 
     async Task Like(int datingappuserId)
     {
         var datingappuser = DatingAppUsers.First(q => q.Id == datingappuserId);
         match.DatingAppUserRecieverId = datingappuser.Id;
     }
-    protected async override Task OnInitializedAsync()
-    {
-        try
-        {
-            DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>(Endpoints.DatingAppUserEndpoint);
-            UserProfiles = await _client.GetFromJsonAsync<List<UserProfile>>(Endpoints.UserProfilesEndpoint);
-        }
-        catch (Exception ex)
-        {
-            // Log or display the exception
-            Console.WriteLine($"Error fetching DatingAppUsers: {ex.Message}");
-        }
-    }
+
 
 
 }

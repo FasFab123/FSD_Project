@@ -62,7 +62,7 @@ namespace DatingApplication.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     profile_picture_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -340,15 +340,15 @@ namespace DatingApplication.Server.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "7f7e4bcc-7eaa-4c2c-8832-1ead2625c264", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEHKuPtlgp5lSSf1qA23kslfwD3oaUbhcYPUCEPVbhmubwSHJPWwhgtiNcBfjRI2HSw==", null, false, "3f1ac0d6-7f6e-4452-be0f-0dbf9c59621a", false, "admin@localhost.com" });
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "14e60535-c992-4c82-9b55-ff98d374257b", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEMKjoj0+5Rsnz7KreU+2aTeyVq/g/YDDGagwdeLIOASh9qTQRR4JpomM0ilYVMEpHA==", null, false, "51e2bacc-4309-42ed-b13a-4f5522bd3091", false, "admin@localhost.com" });
 
             migrationBuilder.InsertData(
                 table: "DatingAppUsers",
                 columns: new[] { "Id", "Age", "CreatedBy", "DateCreated", "DateUpdated", "Email", "Gender", "Password", "UpdatedBy", "Username", "profile_picture_url" },
                 values: new object[,]
                 {
-                    { 1, 18, "System", new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4092), new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4104), "Felicia@gmail.com", "Female", "fel123", "System", "Felicia", null },
-                    { 2, 21, "System", new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4107), new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4108), "Jacob@gmail.com", "Male", "Jac123", "System", "Jacob", null }
+                    { 1, 18, "System", new DateTime(2024, 2, 3, 23, 51, 28, 370, DateTimeKind.Local).AddTicks(1321), new DateTime(2024, 2, 3, 23, 51, 28, 370, DateTimeKind.Local).AddTicks(1334), "Felicia@gmail.com", "Female", "fel123", "System", "Felicia", null },
+                    { 2, 21, "System", new DateTime(2024, 2, 3, 23, 51, 28, 370, DateTimeKind.Local).AddTicks(1336), new DateTime(2024, 2, 3, 23, 51, 28, 370, DateTimeKind.Local).AddTicks(1337), "Jacob@gmail.com", "Male", "Jac123", "System", "Jacob", null }
                 });
 
             migrationBuilder.InsertData(
@@ -359,7 +359,7 @@ namespace DatingApplication.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Matches",
                 columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "DatingAppUserId", "DatingAppUserInitiatorId", "DatingAppUserRecieverId", "UpdatedBy" },
-                values: new object[] { 1, "System", new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4586), new DateTime(2024, 2, 2, 20, 20, 46, 631, DateTimeKind.Local).AddTicks(4587), null, 1, 2, "System" });
+                values: new object[] { 1, "System", new DateTime(2024, 2, 3, 23, 51, 28, 370, DateTimeKind.Local).AddTicks(1806), new DateTime(2024, 2, 3, 23, 51, 28, 370, DateTimeKind.Local).AddTicks(1806), null, 1, 2, "System" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

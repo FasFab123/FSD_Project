@@ -4,7 +4,7 @@
 
 <h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Edit User</h1>
 
-<DatingAppUserComponent ButtonText="Update" OnValidSubmit="EditUser" datingappuser="datingappuser"/>
+<DatingAppUserComponent ButtonText="Update" OnValidSubmit="@EditUser" datingappuser="datingappuser"/>
 <BackToList Target="DatingAppUsers"/>
 
 @code {
@@ -12,12 +12,12 @@
     DatingAppUser datingappuser = new DatingAppUser();
     protected async override Task OnParametersSetAsync()
     {
-        datingappuser = await _client.GetFromJsonAsync<DatingAppUser>($"{Endpoints.DatingAppUserEndpoint}/{id}");
+        datingappuser = await _client.GetFromJsonAsync<DatingAppUser>($"{Endpoints.DatingAppUsersEndpoint}/{id}");
     }
-    async Task EditUser()
+    private async Task EditUser()
     {
-        await _client.PutAsJsonAsync($"{Endpoints.DatingAppUserEndpoint}/{id}", datingappuser);
-        _navManager.NavigateTo("/DatingAppUsers/");
+        await _client.PutAsJsonAsync($"{Endpoints.DatingAppUsersEndpoint}/{id}", datingappuser);
+        _navManager.NavigateTo("/DatingAppUsers");
     }
 
 }

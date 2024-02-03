@@ -9,10 +9,11 @@
 @code {
     Match match = new Match();
 
-    private IList<DatingAppUser> DatingAppUsers;
+    private IList<DatingAppUser>? DatingAppUsers;
+
     protected async override Task OnInitializedAsync()
     {
-        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUserEndpoint}");
+        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUsersEndpoint}");
     }
     private async Task CreateMatch()
     {

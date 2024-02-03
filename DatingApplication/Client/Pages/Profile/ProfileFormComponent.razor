@@ -75,7 +75,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUserEndpoint}");
+        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUsersEndpoint}");
     }
 
 }

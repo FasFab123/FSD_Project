@@ -64,7 +64,7 @@ else
     private List<DatingAppUser> DatingAppUsers;
     protected async override Task OnInitializedAsync()
     {
-        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUserEndpoint}");
+        DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUsersEndpoint}");
     }
     async Task Delete(int datingappuserId)
     {
@@ -72,7 +72,7 @@ else
         var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {datingappuser.Username}?");
         if (confirm)
         {
-            await _client.DeleteAsync($"{Endpoints.DatingAppUserEndpoint}/{datingappuserId}");
+            await _client.DeleteAsync($"{Endpoints.DatingAppUsersEndpoint}/{datingappuserId}");
             await OnInitializedAsync();
         }
     }

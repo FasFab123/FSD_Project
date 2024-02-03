@@ -22,7 +22,7 @@ namespace DatingApplication.Shared.Domain
         [Required]
         [Range(18, 99, ErrorMessage = "You must be at least 18 years old")]
         public int Age { get; set; }
-        public string? Gender { get; set; }
+        public string Gender { get; set; }
         [Required]
         [DataType(DataType.EmailAddress, ErrorMessage = "Invailid Email Address")]
         [EmailAddress]
