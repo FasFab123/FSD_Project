@@ -78,6 +78,7 @@ namespace DatingApplication.Server.Areas.Identity.Pages.Account
             [Display(Name = "Name")]
             public string UserName { get; set; }
             [Required]
+            [Range(18, 99, ErrorMessage = "You must be at least 18 years old")]
             [Display(Name = "Age")]
             public int Age { get; set; }
             [Required]
