@@ -1,5 +1,6 @@
 @inject HttpClient _client
-
+@inject IJSRuntime js
+@implements IDisposable
 
 <EditForm Model="@match" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
@@ -32,7 +33,7 @@
     }
     else
     {
-        <table class="table table-responsive">
+        <table class="table table-responsive" id="creatematchTable">
             <thead>
                 <tr>
                     <th>Profile Picture</th>
@@ -64,6 +65,7 @@
     {
         <button type="submit" class="btn btn-success btn-block">@ButtonText</button>
     }
+    <br />
     <BackToList Target="Matches"/>
 </EditForm>
 
@@ -89,6 +91,13 @@
         match.DatingAppUserRecieverId = datingappuser.Id;
     }
 
-
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#creatematchTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#creatematchTable");
+    }
 
 }

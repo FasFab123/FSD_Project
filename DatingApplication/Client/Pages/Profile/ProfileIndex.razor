@@ -2,6 +2,7 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 @inject HttpClient _client
+@implements IDisposable
 
 <PageTitle>Profile</PageTitle>
 
@@ -12,6 +13,7 @@
     <span class="oi oi-plus"></span>
     Create New Profile
 </a>
+<br />
 
 @if (UserProfiles == null)
 {
@@ -19,7 +21,7 @@
 }
 else
 {
-    <table class=" table table-responsive">
+    <table class=" table table-responsive" id="userprofilesTable">
         <thead>
             <tr>
                 <th>Username</th>
@@ -70,6 +72,14 @@ else
             await _client.DeleteAsync($"{Endpoints.UserProfilesEndpoint}/{userprofileId}");
             await OnInitializedAsync();
         }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#userprofilesTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#userprofilesTable");
     }
 
 }

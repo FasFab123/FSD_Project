@@ -2,6 +2,7 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 @inject HttpClient _client
+@implements IDisposable
 
 <PageTitle>Matches</PageTitle>
 
@@ -10,14 +11,14 @@
     <span class="oi oi-plus"></span>
     Match With Somebody!
 </a>
-
+<br />
 @if (Matches == null)
 {
     <div class="alert alert-info">Loading Matches...</div>
 }
 else
 {
-    <table class=" table table-responsive">
+    <table class=" table table-responsive" id="matchesTable">
         <thead>
             <tr>
                 <th>Initiator</th>
@@ -64,6 +65,14 @@ else
             await _client.DeleteAsync($"{Endpoints.MatchesEndpoint}/{matchId}");
             await OnInitializedAsync();
         }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#matchesTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#matchesTable");
     }
 }
 

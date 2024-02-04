@@ -2,6 +2,8 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 @inject HttpClient _client
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <PageTitle>Profile</PageTitle>
 
@@ -21,7 +23,7 @@
 }
 else
 {
-    <table class=" table table-responsive">
+    <table class=" table table-responsive" id="datingappusersTable">
         <thead>
             <tr>
                 <th>Profile Picture</th>
@@ -64,6 +66,7 @@ else
     private List<DatingAppUser> DatingAppUsers;
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         DatingAppUsers = await _client.GetFromJsonAsync<List<DatingAppUser>>($"{Endpoints.DatingAppUsersEndpoint}");
     }
     async Task Delete(int datingappuserId)
@@ -76,5 +79,12 @@ else
             await OnInitializedAsync();
         }
     }
-
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#datingappusersTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#datingappusersTable");
+    }
 }

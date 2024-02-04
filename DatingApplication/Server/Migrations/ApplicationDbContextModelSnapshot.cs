@@ -30,6 +30,9 @@ namespace DatingApplication.Server.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -42,6 +45,9 @@ namespace DatingApplication.Server.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -97,7 +103,8 @@ namespace DatingApplication.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "05be037a-a64d-45d6-b325-3c9e89ee569f",
+                            Age = 0,
+                            ConcurrencyStamp = "d9d160a4-3fcb-4216-bc0b-f9c64cb882e4",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -105,9 +112,9 @@ namespace DatingApplication.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBbP975Gf4S01JWqewzgF80GuWoa7YULgO9fpDBu8ha4sBnh77Cv8u6GQE2djr93uQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECi9FfpcBvu7BGayp4sa/wOaVme0hRhNhk2SVyO+IiZT5hDArH0U3OfaLvhSjIE1sQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b5f8208a-63cc-46ce-85f7-f4d660806c9f",
+                            SecurityStamp = "bf449c74-155e-4649-b569-1d6072a87f64",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });
@@ -208,8 +215,8 @@ namespace DatingApplication.Server.Migrations
                             Id = 1,
                             Age = 18,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8248),
-                            DateUpdated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8259),
+                            DateCreated = new DateTime(2024, 2, 4, 18, 33, 0, 304, DateTimeKind.Local).AddTicks(869),
+                            DateUpdated = new DateTime(2024, 2, 4, 18, 33, 0, 304, DateTimeKind.Local).AddTicks(882),
                             Email = "Felicia@gmail.com",
                             Gender = "Female",
                             Password = "fel123",
@@ -221,8 +228,8 @@ namespace DatingApplication.Server.Migrations
                             Id = 2,
                             Age = 21,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8263),
-                            DateUpdated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8263),
+                            DateCreated = new DateTime(2024, 2, 4, 18, 33, 0, 304, DateTimeKind.Local).AddTicks(886),
+                            DateUpdated = new DateTime(2024, 2, 4, 18, 33, 0, 304, DateTimeKind.Local).AddTicks(887),
                             Email = "Jacob@gmail.com",
                             Gender = "Male",
                             Password = "Jac123",
@@ -275,8 +282,8 @@ namespace DatingApplication.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8717),
-                            DateUpdated = new DateTime(2024, 2, 3, 23, 54, 44, 545, DateTimeKind.Local).AddTicks(8718),
+                            DateCreated = new DateTime(2024, 2, 4, 18, 33, 0, 304, DateTimeKind.Local).AddTicks(1539),
+                            DateUpdated = new DateTime(2024, 2, 4, 18, 33, 0, 304, DateTimeKind.Local).AddTicks(1541),
                             DatingAppUserInitiatorId = 1,
                             DatingAppUserRecieverId = 2,
                             UpdatedBy = "System"
