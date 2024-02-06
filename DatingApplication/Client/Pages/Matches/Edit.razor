@@ -2,6 +2,19 @@
 @inject HttpClient _client
 @inject NavigationManager _navManager
 
+
+<head>
+    <style>
+        table {
+            color: white;
+        }
+
+        th, td {
+            color: white;
+        }
+    </style>
+</head>
+
 <h1 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Edit Match</h1>
 
 <MatchesComponent ButtonText="Update" OnValidSubmit="EditMatch" match="match" />

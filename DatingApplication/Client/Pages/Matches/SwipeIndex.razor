@@ -3,6 +3,19 @@
 @inject NavigationManager _navManager
 @attribute [Authorize]
 
+
+<head>
+    <style>
+        table {
+            color: white;
+        }
+
+        th, td {
+            color: white;
+        }
+    </style>
+</head>
+
 <h3 class="card-title" style="text-align:center;font-family: 'Lucida Calligraphy',cursive">Match With Somebody!</h3>
 
 <MatchesComponent ButtonText="Match!" match="match" OnValidSubmit="@CreateMatch" />

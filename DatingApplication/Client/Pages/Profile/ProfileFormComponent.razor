@@ -1,5 +1,18 @@
 ﻿@inject HttpClient _client
 
+
+<head>
+    <style>
+        table {
+            color: white;
+        }
+
+        th, td {
+            color: white;
+        }
+    </style>
+</head>
+
 <EditForm Model="@userprofile" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
