@@ -74,11 +74,14 @@ else
         <tbody>
             @foreach (var userprofile in UserProfiles)
             {
-                <tr>
-                    <td>@userprofile.DatingAppUserDescription</td>
+                if (userprofile.DatingAppUser.Id == id)
+                {
+                    <tr>
+                        <td>@userprofile.DatingAppUserDescription</td>
                     <td>@userprofile.Hobby</td>
                     <td>@userprofile.FavouriteAnimal</td>
                 </tr>
+                }
             }
         </tbody>
 
